@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>画像マーカーAR</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<style>
+:root{--blue:#1f5eff;--navy:#17345f;--ink:#20242b}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+#arCard{display:none;position:fixed;z-index:20;left:50%;top:42%;transform:translate(-50%,-50%);
+width:min(88vw,440px);text-align:center;pointer-events:none}
+#arCard.show{display:block;animation:appear .38s ease both}
+#bubble{position:relative;background:rgba(255,255,255,.97);border:3px solid var(--navy);border-radius:30px;
+padding:15px 18px;color:var(--ink);font-size:16px;font-weight:850;line-height:1.45;
+box-shadow:0 8px 28px rgba(0,0,0,.18);margin:0 auto 14px;max-width:390px}
+#bubble::after{content:"";position:absolute;left:50%;bottom:-18px;transform:translateX(-50%) rotate(45deg);
+width:30px;height:30px;background:#fff;border-right:3px solid var(--navy);border-bottom:3px solid var(--navy)}
+#bubble strong{color:var(--blue)}
+#mascot{display:block;width:min(52vw,235px);max-height:34vh;object-fit:contain;margin:0 auto;
+filter:drop-shadow(0 8px 10px rgba(0,0,0,.18))}
+#openSite{display:none;position:fixed;z-index:30;left:50%;bottom:28px;transform:translateX(-50%);
+width:min(90vw,500px);border:2px solid var(--blue);border-radius:18px;padding:17px 20px;
+background:rgba(255,255,255,.97);color:var(--blue);font-size:17px;font-weight:900;
+box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer;text-align:center}
+#openSite.show{display:block;animation:rise .38s ease both}
+@keyframes appear{from{opacity:0;transform:translate(-50%,-46%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes rise{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+
+@media (max-height:700px){
+  #arCard{top:39%}
+  #bubble{padding:11px 15px;font-size:14px;margin-bottom:10px}
+  #mascot{width:min(43vw,190px);max-height:29vh}
+  #openSite{bottom:18px;padding:14px 16px;font-size:15px}
+}
+</style>
+</head><body>
+<div id="arCard">
+  <div id="bubble"><strong>ICT公開研修会・実践発表</strong>のページは<br>下をクリックしてください</div>
+  <img id="mascot" src="./nakkyon_guide.png" alt="案内キャラクター">
+</div>
+<button id="openSite" type="button">🌐　ICT公開研修会・実践発表のページを開く　→</button>
+<a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement:true;physicallyCorrectLights:true" vr-mode-ui="enabled:false" device-orientation-permission-ui="enabled:false">
+<a-camera position="0 0 0" look-controls="enabled:false"></a-camera>
+<a-entity id="target" mindar-image-target="targetIndex:0"></a-entity></a-scene>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{const t=document.querySelector("#target"),b=document.querySelector("#openSite"),c=document.querySelector("#arCard");t.addEventListener("targetFound",()=>{c.classList.add("show");b.classList.add("show")});t.addEventListener("targetLost",()=>{c.classList.remove("show");b.classList.remove("show")});b.onclick=()=>location.href="https://sciencelabo-yoshi.github.io/ict/";});
+</script></body></html>
